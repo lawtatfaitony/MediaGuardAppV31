@@ -227,8 +227,7 @@ httplib::Server svr;
 	}
 
 	printf("\n[HTTP SERVER STARTING......] \n\n[TEST HTML URL : %stest] redirect to /web/playtest.html \n\n", local_device_url.c_str());
-	 
-
+	
 	// User defined file extension and MIME type mappings
 	svr.set_file_extension_and_mimetype_mapping("txt", "text/plain");
 	svr.set_file_extension_and_mimetype_mapping("md", "text/plain");
@@ -293,7 +292,7 @@ httplib::Server svr;
 			res.set_content(file_content, "text/plain");
 		}
 		
-		printf("\n[TEST HTML PAGE] %sweb/playtest.html redirect to //web/playtest.html \n\n", local_device_url.c_str());
+		printf("\n[■TEST HTML PAGE■] %stest redirect to //web/index_template.html \n\n", local_device_url.c_str());
 	});
 
 	// web/index.html from: ./web/index.html 
@@ -362,6 +361,7 @@ httplib::Server svr;
 
 	svr.Get("/hi", [](const httplib::Request& /*req*/, httplib::Response& res) {
 		res.set_content("Hello World!\n", "text/plain");
+		return httplib::Server::HandlerResponse::Handled; //1.1
 	});
 
 	svr.Get("/slow", [](const httplib::Request& req, httplib::Response& res) {
@@ -390,6 +390,7 @@ httplib::Server svr;
 				printf("video req.path = %s\n\n", req.path.c_str());
 				return;
 			}
+			 
 		}
 		else {
 
@@ -614,12 +615,25 @@ httplib::Server svr;
 			}
 
 			// flv/mp4索引文件下载
-			if (path.find(".mp4") != -1 || path.find(".flv") != -1) {
+			if (path.find(".mp4") != -1) {
+
+				res.set_header("Content-Type", "video/mp4");
+
 				if (!UserPasswordValidByToken(req, res)) {
-					printf("mp4/flv unauthorized!!! set_file_request_handler %s\n\n", path.c_str());
+					printf("media mp4 unauthorized!!! set_file_request_handler %s\n\n", path.c_str());
 					return;
 				}
-			}  
+			}
+
+			if (path.find(".flv") != -1) {
+
+				res.set_header("Content-Type", "video/x-flv");
+
+				if (!UserPasswordValidByToken(req, res)) {
+					printf("media flv unauthorized!!! set_file_request_handler %s\n\n", path.c_str());
+					return;
+				}
+			}
 		});
 
 	// 错误处理

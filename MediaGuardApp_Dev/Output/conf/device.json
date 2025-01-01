@@ -37,7 +37,7 @@
     "recordTimeMinutes": 300000,
     "picRemainMinutes": 6,
     "videoRemainMinutes": 15,
-    "storageLimitedbytes": 502400001,
+    "storageLimitedbytes": 1502400001,
     "ffmpegOpenInfo": false,
     "nHDType": "kHWDeviceTypeCUDA",
     "nHDTypeRemark": {

@@ -525,12 +525,12 @@ bool RtspStreamHandle::open_output_stream(AVFormatContext*& pFormatCtx, bool bRt
 	}
 
 	int mediaFormate = (int)MediaFormate::MPEG;
-	//std::string strFormatName = bRtmp ? "flv" : "mp4";  //這裡有問題 輸出格式不是有 bRtmp確定的,這個是輸出rtmp流定義的路徑:如,rtmp://127.0.0.1:1935/live/  //備註:2024-12-31
-	// m_path_filename = strOutputPath;  //m_path_filename 是保存 flv/mp4 文件的路徑 為何拿來保存 輸出流的路徑,不合理 備註:2024-12-31
-
+	 
+	//--------------------------------------------------------------------------------------------------
 	std::string strFormatName = m_infoStream.mediaFormate == (int)MediaFormate::MPEG ? "mp4" : "flv";
 	std::string strOutputPath = bRtmp ? m_infoStream.strOutput : get_filename(FType::kFileTypeVideo);
-	
+	m_path_filename = strOutputPath;
+
 	int nCode = avformat_alloc_output_context2(&pFormatCtx, NULL, strFormatName.c_str(), strOutputPath.c_str());
 	if (nullptr == pFormatCtx)
 	{
@@ -771,6 +771,7 @@ void RtspStreamHandle::do_decode()
 	std::cout << "\n" << Time::GetCurrentSystemTime() << " Initializing cameraId = " << m_infoStream.nCameraId << " start time : " << std::put_time(start_time_local_tm, "%Y-%m-%d %H:%M:%S") << "\n" << std::endl;
 	 
 	cameraConnectingStatus = CameraConnectingStatus::InPlaying; //改变 状态为Inplaying
+
 	while (!m_bExit)
 	{
 		int nCode = av_read_frame(m_pInputAVFormatCtx, &packet);
@@ -785,8 +786,8 @@ void RtspStreamHandle::do_decode()
 #pragma region NETWORK RECONNECTING 处理网络中断重连 网络中断，尝试重连
 			// 处理网络中断重连 
 			// 网络中断，尝试重连
-			std::cout <<  "\n"<< Time::GetCurrentSystemTime() <<"CameraId=" << m_infoStream .nCameraId << "CAMERA DISCONNECTED, NETWORK RECONNECTING......\n" << std::endl;
-			av_log(NULL, AV_LOG_ERROR, "\nCameraId=%d CAMERA DISCONNECTED, NETWORK RECONNECTING......\n\n", m_infoStream.nCameraId);
+			std::cout <<  "\n\n"<< Time::GetCurrentSystemTime() <<"CameraId=" << m_infoStream .nCameraId << "\tCAMERA DISCONNECTED, NETWORK RECONNECTING......\n\n" << std::endl;
+			av_log(NULL, AV_LOG_ERROR, "\n\nCameraId=%d CAMERA DISCONNECTED, NETWORK RECONNECTING......\n\n", m_infoStream.nCameraId);
 
 			//av_dict_set(&pOption, "http_proxy", m_infoStream.strInput.c_str(), 0);
 			//avformat_open_input(&m_pInputAVFormatCtx, m_infoStream.strInput.c_str(), NULL, &pOption);  //如果處於 VISUAL STUDIO DEBUG 調試的情況下,鏈接中的時候,也會調到這裡重連
@@ -832,11 +833,11 @@ void RtspStreamHandle::do_decode()
 			}
 		}
 
-		//hls解码  
+		//hls解码===============================================  
 		if (m_infoStream.nStreamDecodeType == StreamDecodeType::HLS)
 			write_output_hls_stream(m_pHlsOutStreamAVFormatCtx, packet);
 
-		//===============================================
+		//rtmp解码===============================================
 		if (m_infoStream.nStreamDecodeType == StreamDecodeType::RTMP) {
 			printf("[fun::do_decode] m_infoStream.bRtmp = true \n");
 			save_stream(m_pOutputStreamAVFormatCtx, packet);

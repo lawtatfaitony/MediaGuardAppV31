@@ -25,9 +25,13 @@
         <span class="alert alert-success"><b>TESTING PLYER FOR CAMERA HLS LIVE</b></span>
 
         <div class="row p-3 mb-1">
-            <label>HLS URL </label> <input id="hlsUrlx" value="$camera_hls$" />
-			<span class="text-white bg-success" title="CameraId = 8">CameraId=8</span>
-			<span class="text-danger" style="font-size:12px;font-weight:600;" >HLS URL FORMAT (CameraId=8)</span>
+            <label class="label label-primary p-1">HLS URL </label> <input id="hlsUrlx" value="$camera_hls$" />
+			<div class="alert alert-warning">
+				<span class="text-white bg-success p-1" title="CameraId = 8"> CameraId=8 </span><br>
+				<span class="text-danger" style="font-size:12px;font-weight:600;" > HLS URL FORMAT (CameraId=8)</span><br>
+				<span class="text-danger" style="font-size:12px;font-weight:600;" > HLS URL BY NAT STUN: </span><br>
+				<span class="text-white bg-dark pt-1 pb-1 pl-3 pr-3" style="font-size:12px;" >$camera_hls_by_stun$ </span>
+			</div>
         </div>
 
         <div class="row p-3 mb-1">

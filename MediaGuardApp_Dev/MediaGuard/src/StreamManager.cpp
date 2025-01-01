@@ -93,10 +93,8 @@ bool StreamMangement::StartDecode(const StreamInfo& infoStream)
 
 		m_bExit = false;
 
-		//重连
-		//m_thChkConnect = std::thread(std::bind(&StreamMangement::m_check_connect, this));
-
-		//把rtsp视频单元转移到全局队列以作识别业务处理
+		  
+		//把rtsp视频单元[RtspStreamHandle.cpp]转移到全局队列以作识别业务处理
 		if (infoStream.bSavePic) {
 
 			//TEST
@@ -173,7 +171,7 @@ bool StreamMangement::check_para(const StreamInfo& infoStream)
 	}
 	if (!(infoStream.bRtmp || infoStream.bSavePic || infoStream.bSaveVideo))
 	{
-		printf("Nothing to do, save picture, save video of push rtmp\n");
+		printf("[check_para]Nothing to start decode, all false : save picture, save video, save video of push rtmp\n");
 		return false;
 	}
 

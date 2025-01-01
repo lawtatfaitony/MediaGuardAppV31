@@ -25,7 +25,7 @@
 #endif
   
  
-	// STUN 消息类型
+// STUN 消息类型
 #define STUN_BINDING_REQUEST 0x0001
 #define STUN_BINDING_RESPONSE 0x0101
 

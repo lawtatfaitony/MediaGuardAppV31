@@ -14,6 +14,7 @@ NatHeartBean::NatHeartBean()
 /*
 * 開發說明 
 * https://arthurchiao.art/blog/how-nat-traversal-works-zh/ ★★★★★入門必讀
+* https://arthurchiao.art/blog/how-nat-traversal-works-zh/ ★★★★★入門必讀
 * [译] NAT 穿透是如何工作的：技术原理及企业级实践
 * 
 */
